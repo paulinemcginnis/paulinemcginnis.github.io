@@ -98,7 +98,7 @@ input, select, textarea {
 		}
 
 	body, input, select, textarea {
-		color: #a2a2a2;
+		color: #666666;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
 		font-weight: 400;
@@ -2055,7 +2055,7 @@ input, select, textarea {
 			display: block;
 			height: 100%;
 			left: 0;
-			opacity: 0.5;
+			opacity: 0.1;
 			position: absolute;
 			top: 0;
 			width: 100%;
@@ -2370,7 +2370,7 @@ input, select, textarea {
 
 	table {
 		margin: 0 0 2em 0;
-		width: 100%;
+		border: solid 1px #efefef;
 	}
 
 		table tbody tr {
@@ -2389,8 +2389,8 @@ input, select, textarea {
 
 		table th {
 			color: #787878;
-			font-size: 0.9em;
-			font-weight: 400;
+			font-size: 1.0em;
+			font-weight: 1000;
 			padding: 0 0.75em 0.75em 0.75em;
 			text-align: left;
 		}
