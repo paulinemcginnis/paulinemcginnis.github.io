@@ -40,22 +40,150 @@
     <h3>Overview of the project:</h3> 
 
     <p>
-Overview... 
+The New York City Taxi and Limousine Commission (TLC) is an agency responsible for licensing and regulating New York City's taxi cabs and for-hire vehicles. In the fictitious scenario proposed by this end-of-course project, TLC has hired the fictional consulting firm called Automatidata to develop a model that can estimate taxi fares before the ride. They have provided Automatidata with data that they collected over the past year from their taxi and limousine licensees. As the data specialist for this firm, I was tasked with analyzing the data and creating the model. 
+    </p>
+    <p>
+    <b>Note:</b> This story and the project's dataset were created for pedagogical purposes and may not be indicative of New York City taxi cab riders' behavior.
     </p>
 
     <h3>Summary of the approach and results:</h3> 
 
     <p>
-Summary 
+    After performing exploratory data analysis (EDA) to understand the dataset and deal with outliers and missing values, I performed feature engineering to estimate the mean distance and trip duration based on a ride's pick-up and drop-off zones. I also created a variable called "rush_hour" based on the day and time of each trip. Flat-rate rides to and from JFK airport were excluded so as not to interfere with the regression analysis (and for these trips, drivers already know beforehand what will be the final fare). A correlation matrix was created to see which variables best correlate with the fare amount, and it was found that trip distance and duration are the two variables with the strongest correlations (as is to be expected). Mean distance and duration also correlate very well with fare amount, and somewhat unexpectedly rush hour did not. 
+    </p>
+    <p>
+    Multiple linear regression was performed on the data, with the fare amount taken as the dependent variable (the outcome variable) and trip distance and mean duration taken as the independent variables (or predictor variables). Mean duration was used in stead of actual trip duration because we cannot expect drivers to have that information at the start of a trip (the driver can use a GPS to get the trip distance at the start of the trip, but not every GPS will be able to properly estimate duration). The regression model performed very well on test data, managing to account for 89.5% of the fare amount, based on only these two variables. 
+    </p>
+    <p>
+    The final fare is estimated to a high degree of accuracy using this model. The average residual (the difference between the predicted fare and the true fare) is only $0.04. Half of the predicted fares fall within only $1.00 of the true fare, and 95% of predicted fares fall within $5.00 of the true fare. This model can be used by the NYC TLC to estimate taxi and limousine fares at the beginning of a ride. 
     </p>
 
     <h3>Deliverables connected to the project on Coursera:</h3> 
 
-   <!-- <p><a href="Google_Capstone_project_Executive_summary.pdf" target='_blank'>Executive summary</a> 
-    <br> --> 
+    <p><a href="Automatidata_Course_5_Executive_summary.pdf" target='_blank'>Executive summary</a> 
+    <br> 
     <a href="https://nbviewer.org/github/paulinemcginnis/paulinemcginnis.github.io/blob/main/Activity_Course_5_Automatidata_project_lab.ipynb" target='_blank'>Full Jupyter notebook with details of the analysis</a> </p>
 
     <h3>The dataset</h3> 
+
+    <p>This project used a dataset consisting of 18 columns and 22,699 rows of data on taxi and limousine rides, described in the table below. </p> 
+
+    <div class="table-wrapper">
+      <table> 
+        <thead> 
+        <tr> 
+            <th>Column name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead> 
+        <tbody> 
+        <tr>
+            <td>Unnamed: 0</td>
+            <td>int64</td>
+            <td>Trip identification number</td>
+        </tr>
+        <tr>
+            <td>VendorID</td>
+            <td>int64</td>
+            <td>A code indicating the TPEP provider that provided the record. <br>
+                <b>1= Creative Mobile Technologies, LLC; <br>
+                   2= VeriFone Inc.</b></td>
+        </tr>
+        <tr>
+            <td>tpep_pickup_datetime</td>
+            <td>str</td>
+            <td>The date and time when the meter was engaged. </td>
+        </tr>
+        <tr>
+            <td>tpep_dropoff_datetime</td>
+            <td>str</td>
+            <td>The date and time when the meter was disengaged. </td>
+        </tr>
+        <tr>
+            <td>passenger_count</td>
+            <td>int64</td>
+            <td>The number of passengers in the vehicle (a driver-entered value).</td>
+        </tr>
+        <tr>
+            <td>trip_distance</td>
+            <td>float64</td>
+            <td>The elapsed trip distance in miles reported by the taximeter.</td>
+        </tr>
+        <tr>
+            <td>RatecodeID</td>
+            <td>int64</td>
+            <td>The final rate code in effect at the end of the trip. <br>
+                <b>1= Standard rate <br>
+                2=JFK <br>
+                3=Newark <br>
+                4=Nassau or Westchester <br>
+                5=Negotiated fare <br>
+                6=Group ride</b></td>
+        </tr>
+        <tr>
+            <td>store_and_fwd_flag</td>
+            <td>str</td>
+            <td>This flag indicates whether the trip record was held in vehicle memory before being sent to the vendor, aka "store and forward," because the vehicle did not have a connection to the server (<b>Y/N</b>). </td>
+        </tr>
+        <tr>
+            <td>PULocationID</td>
+            <td>int64</td>
+            <td>TLC Taxi Zone in which the taximeter was engaged.</td>
+        </tr>
+        <tr>
+            <td>DOLocationID</td>
+            <td>int64</td>
+            <td>TLC Taxi Zone in which the taximeter was disengaged.</td>
+        </tr>
+        <tr>
+            <td>payment_type</td>
+            <td>int64</td>
+            <td>A numeric code signifying how the passenger paid for the trip. <br> 
+                <b>1= Credit card <br>
+                2= Cash <br>
+                3= No charge <br>
+                4= Dispute <br>
+                5= Unknown <br>
+                6= Voided trip</b></td>
+        </tr>
+        <tr>
+            <td>fare_amount</td>
+            <td>float64</td>
+            <td>The time-and-distance fare calculated by the meter.</td>
+        </tr>
+        <tr>
+            <td>extra</td>
+            <td>float64</td>
+            <td>Miscellaneous extras and surcharges. Currently, this only includes the $0.50 and $1 rush hour and overnight charges.</td>
+        </tr>
+        <tr>
+            <td>mta_tax</td>
+            <td>float64</td>
+            <td>$0.50 MTA tax that is automatically triggered based on the metered rate in use.</td>
+        </tr>
+        <tr>
+            <td>tip_amount</td>
+            <td>float64</td>
+            <td>Tip amount – This field is automatically populated for credit card tips. Cash tips are not included.</td>
+        </tr>
+        <tr>
+            <td>tolls_amount</td>
+            <td>float64</td>
+            <td>Total amount of all tolls paid in trip. </td>
+        </tr>
+        <tr>
+            <td>improvement_surcharge</td>
+            <td>float64</td>
+            <td>$0.30 improvement surcharge assessed trips at the flag drop. The  improvement surcharge began being levied in 2015.</td>
+        </tr>
+        <tr>
+            <td>total_amount</td>
+            <td>float64</td>
+            <td>The total amount charged to passengers. Does not include cash tips.</td>
+        </tr>
+      </tbody> 
+    </table>
 
 </body>
 </html>
